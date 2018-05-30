@@ -1,9 +1,11 @@
+import { forEach } from 'slapdash'
 import { createObjectPath } from '../lib/createObjectPath'
 import { log } from '../lib/log'
 
+const noop: any = () => {}
+
 export default function experience (meta) {
   const isControl = meta.variationIsControl
-  const noop: any = () => {}
 
   return {
     register: function (id, ExperienceComponent, cb) {
@@ -23,7 +25,7 @@ export default function experience (meta) {
       component.ExperienceComponent = ExperienceComponent
       component.instances = component.instances || []
 
-      component.instances.forEach(i => {
+      forEach(component.instances, i => {
         i.takeOver()
       })
 
@@ -34,7 +36,7 @@ export default function experience (meta) {
           claimed = false
           component.claimed = false
           delete component.ExperienceComponent
-          component.instances.forEach(i => i.release())
+          forEach(component.instances, i => i.release())
         }
       }
     }

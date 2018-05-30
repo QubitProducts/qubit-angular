@@ -1,10 +1,13 @@
 {
   "name": "qubit-angular",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "A library for enabling Qubit Experiences on Angular sites",
   "scripts": {
     "test": "make test",
-    "build": "make build"
+    "build": "make build",
+    "version": "make build",
+    "release": "np --no-publish --any-branch",
+    "postrelease": "npm publish dist"
   },
   "author": "Karolis Narkevicius <karolis@qubit.com>",
   "license": "ISC",
@@ -14,6 +17,7 @@
   "devDependencies": {
     "@angular/common": "^5.0.0",
     "@angular/core": "^5.0.0",
+    "np": "^3.0.1",
     "tslint": "^5.10.0",
     "tslint-config-standard": "^7.0.0",
     "typescript": "^2.8.3"
