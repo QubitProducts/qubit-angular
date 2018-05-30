@@ -3,6 +3,7 @@ import { log } from '../lib/log'
 
 export default function experience (meta) {
   const isControl = meta.variationIsControl
+  const noop: any = () => {}
 
   return {
     register: function (id, ExperienceComponent, cb) {
@@ -13,7 +14,7 @@ export default function experience (meta) {
 
       // the slot already claimed by another experience
       if (component.claimed) {
-        return () => {}
+        return noop
       }
 
       claimed = true

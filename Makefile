@@ -8,7 +8,7 @@ start:
 test: lint
 
 lint:
-	@$(BIN)/tslint -p tsconfig.json -c tslint.json
+	@$(BIN)/tslint --type-check -p tsconfig.json -c tslint.json
 
 build: lint
 	@$(BIN)/tsc

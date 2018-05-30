@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const slapdash_1 = require("slapdash");
+var slapdash_1 = require("slapdash");
 function createObjectPath(root, path) {
     path = slapdash_1.isArray(path) ? path : path.split('.');
     return slapdash_1.reduce(path, function (acc, nextPath) {
@@ -9,3 +9,4 @@ function createObjectPath(root, path) {
     }, root);
 }
 exports.createObjectPath = createObjectPath;
+//# sourceMappingURL=createObjectPath.js.map

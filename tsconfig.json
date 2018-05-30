@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ES6",
-    "lib": ["es2016"],
-    "outDir": "dist",
+    "target": "es5",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strict": true
+    "suppressImplicitAnyIndexErrors": true,
+    "lib": ["es2015", "dom"],
+    "outDir": "dist"
   },
   "include": [
-    "experience",
-    "lib",
-    "wrapper"
+    "experience/**/*",
+    "lib/**/*",
+    "wrapper/**/*"
   ],
   "exclude": [
-    "node_modules",
+    "node_modules/**/*",
     "dist",
     "demo"
   ]

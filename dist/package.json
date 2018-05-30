@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "A library for enabling Qubit Experiences on Angular sites",
   "scripts": {
-    "test": "make test",
-    "build": "make build"
+    "test": "standard"
   },
   "author": "Karolis Narkevicius <karolis@qubit.com>",
   "license": "ISC",
