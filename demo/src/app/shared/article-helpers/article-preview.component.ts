@@ -9,6 +9,11 @@ import { Article } from '../../core';
 export class ArticlePreviewComponent {
   @Input() article: Article;
 
+  onChangeTitle () {
+    this.article.title = this.article.title.split(' // ')[0]
+    this.article.title = this.article.title + ' // ' + Math.random()
+  }
+
   onToggleFavorite(favorited: boolean) {
     this.article['favorited'] = favorited;
 

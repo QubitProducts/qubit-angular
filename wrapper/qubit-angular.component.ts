@@ -55,84 +55,91 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
   // code initiates state changes
   changeDetector: ChangeDetectorRef;
 
+  // when this component gets destroyed
+  destroyed = false;
+
   constructor(cd: ChangeDetectorRef) {
     this.changeDetector = cd;
   }
 
   ngOnInit () {
-    console.log(`[qubit-angular] onOnInit ${this.id}`)
+    console.log(`[qubit-angular/wrp] [${this.id}] onOnInit`)
     if (this.disable) {
       return;
     }
 
-    this.registerWithExperienceComponent();
+    this.registerWithExperiences();
   }
 
-  registerWithExperienceComponent () {
-    console.log(`[qubit-angular] registerWithExperienceComponent ${this.id}`)
+  registerWithExperiences () {
+    console.log(`[qubit-angular/wrp] [${this.id}] registerWithExperiences`)
     this.component = createObjectPath(window, ['__qubit', 'angular', 'components', this.id]);
-    this.component.run = () => this.runExperience();
-    this.component.destroy = () => this.destroyExperience();
+    this.component.instances = this.component.instances || []
+    this.component.instances.push(this);
 
-    if (this.component.owner) {
-      this.component.run()
+    if (this.component.claimed) {
+      this.takeOver();
     }
   }
 
-  runExperience () {
-    console.log(`[qubit-angular] runExperience ${this.id}`)
-    if (this.component.owner) {
-      this.isExperienceActive = true;
-      this.changeDetector.detectChanges();
+  takeOver () {
+    console.log(`[qubit-angular/wrp] [${this.id}] takeOver`);
+    this.isExperienceActive = true;
+    this.changeDetector.detectChanges();
 
-      try {
-        this.experience = new this.component.Component(
-          this.outlet.nativeElement,
-          this.original.nativeElement,
-          this.data
-        );
-        this.experience.render();
-      } catch (err) {
-        console.log(`Starting the experience in id=${this.id} failed`, err);
-        this.destroyExperience();
-      }
+    try {
+      this.experience = new this.component.ExperienceComponent(
+        this.outlet.nativeElement,
+        this.original.nativeElement,
+        this.data
+      );
+      this.experience.render();
+    } catch (err) {
+      console.error(`Starting the experience in id=${this.id} failed`, err);
+      this.release();
     }
   }
 
-  destroyExperience (options: any = {}) {
-    console.log(`[qubit-angular] destroyExperience ${this.id}`)
+  release () {
+    console.log(`[qubit-angular/wrp] [${this.id}] release`)
     if (this.experience && this.experience.onDestroy) {
       try {
         this.experience.onDestroy();
       } catch (err) {
-        console.log(`The onDestroy hook of experience ${this.id} failed`, err);
+        console.error(`The onDestroy hook of experience ${this.id} failed`, err);
       }
     }
-    if (this.component) {
-      this.component.release({ skipDestroy: true })
-    }
+
     this.experience = null;
     this.isExperienceActive = false;
-    if (!options.destroyedView) {
+
+    if (!this.destroyed) {
       this.changeDetector.detectChanges();
     }
   }
 
   ngOnChanges () {
-    console.log(`[qubit-angular] ngOnChanges ${this.id}`)
-    if (this.disable) {
-      if (this.experience) {
-        this.destroyExperience();
-      }
+    console.log(`[qubit-angular/wrp] [${this.id}] ngOnChanges`)
+    if (this.disable && this.experience) {
+      // we got switched off
+      this.release();
     }
 
-    if (this.experience && this.experience.onChange) {
-      this.experience.onChange(this);
+    if (this.experience && this.experience.onChanges) {
+      this.experience.onChanges(this.data);
+    }
+  }
+
+  ngDoCheck () {
+    if (this.experience && this.experience.doCheck) {
+      this.experience.doCheck(this.data);
     }
   }
 
   ngOnDestroy () {
-    console.log(`[qubit-angular] ngOnDestroy ${this.id}`)
-    this.destroyExperience({ destroyedView: true });
+    console.log(`[qubit-angular/wrp] [${this.id}] ngOnDestroy`)
+    this.destroyed = true;
+    this.component.instances = this.component.instances.filter(i => i !== this)
+    this.release();
   }
 }

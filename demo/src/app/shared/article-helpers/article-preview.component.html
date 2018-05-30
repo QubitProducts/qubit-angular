@@ -9,7 +9,9 @@
   </app-article-meta>
 
   <a [routerLink]="['/article', article.slug]" class="preview-link">
-    <h1>{{ article.title }}</h1>
+    <qubit-angular id="article-preview" [data]="article">
+      <h1>{{ article.title }}</h1>
+    </qubit-angular>
     <p>{{ article.description }}</p>
     <span>Read more...</span>
     <ul class="tag-list">
@@ -19,4 +21,5 @@
       </li>
     </ul>
   </a>
+  <button (click)="onChangeTitle($event)">Change title</button>
 </div>

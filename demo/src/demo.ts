@@ -44,36 +44,48 @@ function experience1 () {
 }
 
 function experience2 () {
-  class ArticleComponent {
+  class ArticlePreviewComponent {
     el: any
     oc: any
+    article: any
+    title: string
 
-    constructor (el, originalContentEl) {
+    constructor (el, originalContentEl, article) {
       this.el = el
       this.oc = originalContentEl
+      this.article = article
+      this.title = this.article.title
     }
 
     render () {
-      this.el.innerHTML = 'I have been rendered for 0 seconds'
-      this.el.style.padding = '100px'
-      this.el.style.background = '#591bb3'
-      this.el.style.color = 'white'
-      this.el.style.textAlign = 'center'
-      this.el.style.fontSize = '20px'
-
-      const start = Date.now()
-      setInterval(() => {
-        this.el.innerHTML = `I have been rendered for ${Math.round((Date.now() - start) / 1000)} seconds`
-      }, 100)
+      this.el.innerHTML = `<h1>${this.title}</h1>`
+      this.el.querySelector('h1').style.borderBottom = '5px dotted rgb(89, 27, 179)'
+      this.el.querySelector('h1').style.color = 'rgb(89, 27, 179)'
+      this.el.querySelector('h1').style.display = 'inline'
+      this.el.querySelector('h1').style.margin = '5px'
     }
 
-    onChange () {}
+    onChanges () {
+      this.render()
+    }
+
+    doCheck () {
+      if (this.title !== this.article.title) {
+        this.title = this.article.title
+        this.render()
+      }
+    }
 
     onDestroy () {}
   }
 
+  const remove = experience({ }).register('article-preview', ArticlePreviewComponent, () => {
+    console.log('Activated experience 3')
+    // cb()
+  })
+
   return {
-    remove: () => {}
+    remove
   }
 }
 
@@ -129,8 +141,8 @@ let cleanup = []
 
 function start () {
   cleanup.push(experience1())
-  // cleanup.push(experience2())
-  // cleanup.push(experience3())
+  cleanup.push(experience2())
+  cleanup.push(experience3())
 }
 
 function stop () {

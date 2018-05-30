@@ -1,47 +1,39 @@
 import { createObjectPath } from '../lib/createObjectPath'
 
 export default function experience (meta) {
+  // TODO - don't render anything when in control,
+  // but follow the same rules otherwise
   var isControl = meta.variationIsControl
 
   return {
-    register: function (id, Component, cb) {
-      console.log(`[qubit-angular] Registering ${id}`)
+    register: function (id, ExperienceComponent, cb) {
+      console.log(`[qubit-angular/exp] [${id}] registering`)
       let claimed = false
 
       const component = createObjectPath(window, ['__qubit', 'angular', 'components', id])
-      if (!component.owner) {
-        component.owner = id
-        component.Component = Component
-        component.instances = []
-        claimed = true
 
-        // the run hook has already been provided
-        // by the angular wrapper, call it, otherwise,
-        // the hook will be initiated from angular side
-        if (component.run) {
-          console.log(`[qubit-angular] Calling component.run() for ${id} from experience side`)
-          component.run()
-        }
+      // the slot already claimed by another experience
+      if (component.claimed) {
+        return () => {}
       }
 
-      function release (options = {}) {
-        console.log(`[qubit-angular] Releasing ${id}`)
+      claimed = true
+      component.claimed = true
+      component.ExperienceComponent = ExperienceComponent
+      component.instances = component.instances || []
+
+      component.instances.forEach(i => {
+        i.takeOver()
+      })
+
+      return function release () {
         if (claimed) {
-          // the destroy hook provided by
-          // the angular wrapper
-          if (component.destroy && !options.skipDestroy) {
-            console.log(`[qubit-angular] Calling component.destroy() for ${id} from experience side`)
-            component.destroy()
-          }
-          component.owner = null
-          component.instances = []
           claimed = false
+          component.claimed = false
+          delete component.ExperienceComponent
+          component.instances.forEach(i => i.release())
         }
       }
-
-      component.release = release
-
-      return release
     }
   }
 }
