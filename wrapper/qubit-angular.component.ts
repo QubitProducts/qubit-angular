@@ -14,7 +14,7 @@ import { createObjectPath } from '../lib/createObjectPath'
 @Component({
   selector: 'qubit-angular',
   template: `
-    <div *ngIf="!isExperienceActive">
+    <div #original [hidden]="isExperienceActive">
       <ng-content></ng-content>
     </div>
     <div *ngIf="isExperienceActive">
@@ -35,13 +35,17 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
 
   // this is arbitrary data that can be passed to this
   // component that will get passed to the experience
-  @Input() data;
+  @Input() data: any;
 
   // this is the DOM element that will get passed to the
   // experience as the container for all of it's work
   @ViewChild('outlet') outlet: ElementRef;
+  @ViewChild('original') original: ElementRef;
 
-  // the reference to the experience component
+  // the experience component API on window
+  component = null;
+
+  // the experience component instance
   experience = null;
 
   // toggles when the experience takes over
@@ -56,30 +60,37 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit () {
+    console.log(`[qubit-angular] onOnInit ${this.id}`)
     if (this.disable) {
       return;
     }
+
     this.registerWithExperienceComponent();
   }
 
-  getExperienceComponent () {
-    return createObjectPath(window, ['__qubit', 'angular', 'components', this.id]);
-  }
-
   registerWithExperienceComponent () {
-    const component = this.getExperienceComponent();
-    component.run = () => this.runExperience();
-    component.destroy = () => this.destroyExperience();
+    console.log(`[qubit-angular] registerWithExperienceComponent ${this.id}`)
+    this.component = createObjectPath(window, ['__qubit', 'angular', 'components', this.id]);
+    this.component.run = () => this.runExperience();
+    this.component.destroy = () => this.destroyExperience();
+
+    if (this.component.owner) {
+      this.component.run()
+    }
   }
 
   runExperience () {
-    const component = this.getExperienceComponent();
-    if (component.owner) {
+    console.log(`[qubit-angular] runExperience ${this.id}`)
+    if (this.component.owner) {
       this.isExperienceActive = true;
       this.changeDetector.detectChanges();
 
       try {
-        this.experience = new component.Component(this.outlet.nativeElement);
+        this.experience = new this.component.Component(
+          this.outlet.nativeElement,
+          this.original.nativeElement,
+          this.data
+        );
         this.experience.render();
       } catch (err) {
         console.log(`Starting the experience in id=${this.id} failed`, err);
@@ -88,20 +99,27 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  destroyExperience () {
+  destroyExperience (options: any = {}) {
+    console.log(`[qubit-angular] destroyExperience ${this.id}`)
     if (this.experience && this.experience.onDestroy) {
       try {
         this.experience.onDestroy();
       } catch (err) {
-        console.log(err);
+        console.log(`The onDestroy hook of experience ${this.id} failed`, err);
       }
+    }
+    if (this.component) {
+      this.component.release({ skipDestroy: true })
     }
     this.experience = null;
     this.isExperienceActive = false;
-    this.changeDetector.detectChanges();
+    if (!options.destroyedView) {
+      this.changeDetector.detectChanges();
+    }
   }
 
   ngOnChanges () {
+    console.log(`[qubit-angular] ngOnChanges ${this.id}`)
     if (this.disable) {
       if (this.experience) {
         this.destroyExperience();
@@ -114,8 +132,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy () {
-    if (this.experience) {
-      this.destroyExperience();
-    }
+    console.log(`[qubit-angular] ngOnDestroy ${this.id}`)
+    this.destroyExperience({ destroyedView: true });
   }
 }

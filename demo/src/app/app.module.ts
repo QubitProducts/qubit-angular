@@ -11,6 +11,8 @@ import {
 } from './shared';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
+import { QubitAngularModule } from '../../../../qubit-angular/wrapper/qubit-angular.module';
+import { QubitService } from './services/tracking/qubit.service';
 
 @NgModule({
   declarations: [
@@ -24,9 +26,10 @@ import { CoreModule } from './core/core.module';
     SharedModule,
     HomeModule,
     AuthModule,
-    AppRoutingModule
+    AppRoutingModule,
+    QubitAngularModule
   ],
-  providers: [],
+  providers: [QubitService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

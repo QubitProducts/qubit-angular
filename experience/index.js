@@ -1,10 +1,11 @@
-import  { createObjectPath } from '../lib/createObjectPath'
+import { createObjectPath } from '../lib/createObjectPath'
 
 export default function experience (meta) {
   var isControl = meta.variationIsControl
 
   return {
     register: function (id, Component, cb) {
+      console.log(`[qubit-angular] Registering ${id}`)
       let claimed = false
 
       const component = createObjectPath(window, ['__qubit', 'angular', 'components', id])
@@ -18,15 +19,18 @@ export default function experience (meta) {
         // by the angular wrapper, call it, otherwise,
         // the hook will be initiated from angular side
         if (component.run) {
+          console.log(`[qubit-angular] Calling component.run() for ${id} from experience side`)
           component.run()
         }
       }
 
-      return function release () {
+      function release (options = {}) {
+        console.log(`[qubit-angular] Releasing ${id}`)
         if (claimed) {
           // the destroy hook provided by
           // the angular wrapper
-          if (component.destroy) {
+          if (component.destroy && !options.skipDestroy) {
+            console.log(`[qubit-angular] Calling component.destroy() for ${id} from experience side`)
             component.destroy()
           }
           component.owner = null
@@ -34,6 +38,10 @@ export default function experience (meta) {
           claimed = false
         }
       }
+
+      component.release = release
+
+      return release
     }
   }
 }

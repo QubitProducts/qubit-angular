@@ -5,16 +5,16 @@ import { HomeComponent } from './home.component';
 import { HomeAuthResolver } from './home-auth-resolver.service';
 import { SharedModule } from '../shared';
 import { HomeRoutingModule } from './home-routing.module';
-import { QubitAngularComponent } from '../../../../../qubit-angular/wrapper/qubit-angular.component';
+import { QubitAngularModule } from '../../../../../qubit-angular/wrapper/qubit-angular.module';
 
 @NgModule({
   imports: [
     SharedModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    QubitAngularModule
   ],
   declarations: [
-    HomeComponent,
-    QubitAngularComponent
+    HomeComponent
   ],
   providers: [
     HomeAuthResolver

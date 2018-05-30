@@ -8,14 +8,14 @@
   },
   "author": "Karolis Narkevicius <karolis@qubit.com>",
   "license": "ISC",
-  "peerDependencies": {
-    "@angular/core": "*"
-  },
-  "devDependencies": {
-    "@angular/core": "^5.2.9",
-    "standard": "^11.0.1"
-  },
   "dependencies": {
     "slapdash": "^1.3.3"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
+  },
+  "peerDependencies": {
+    "@angular/core": "*",
+    "@angular/common": "*"
   }
 }
