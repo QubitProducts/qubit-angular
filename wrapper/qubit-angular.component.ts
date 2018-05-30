@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   OnChanges,
+  DoCheck,
   OnDestroy,
   ElementRef,
   ViewChild,
@@ -10,6 +11,7 @@ import {
 } from '@angular/core';
 
 import { createObjectPath } from '../lib/createObjectPath'
+import { log } from '../lib/log'
 
 @Component({
   selector: 'qubit-angular',
@@ -22,7 +24,7 @@ import { createObjectPath } from '../lib/createObjectPath'
     </div>
   `
 })
-export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
+export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDestroy {
 
   // the experience references this angular component
   // by this string id
@@ -63,8 +65,9 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit () {
-    console.log(`[qubit-angular/wrp] [${this.id}] onOnInit`)
+    log(`[qubit-angular/wrp] [${this.id}] onOnInit`)
     if (this.disable) {
+      log(`[qubit-angular/wrp] [${this.id}] disabled`)
       return;
     }
 
@@ -72,8 +75,14 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   registerWithExperiences () {
-    console.log(`[qubit-angular/wrp] [${this.id}] registerWithExperiences`)
+    log(`[qubit-angular/wrp] [${this.id}] registerWithExperiences`)
     this.component = createObjectPath(window, ['__qubit', 'angular', 'components', this.id]);
+
+    if (this.component.isControl) {
+      log(`[qubit-angular/wrp] [${this.id}] in control - not doing anything`);
+      return
+    }
+
     this.component.instances = this.component.instances || []
     this.component.instances.push(this);
 
@@ -83,7 +92,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   takeOver () {
-    console.log(`[qubit-angular/wrp] [${this.id}] takeOver`);
+    log(`[qubit-angular/wrp] [${this.id}] takeOver`);
     this.isExperienceActive = true;
     this.changeDetector.detectChanges();
 
@@ -95,18 +104,22 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
       );
       this.experience.render();
     } catch (err) {
-      console.error(`Starting the experience in id=${this.id} failed`, err);
+      if (window.console) {
+        console.error(`Starting the experience in id=${this.id} failed`, err);
+      }
       this.release();
     }
   }
 
   release () {
-    console.log(`[qubit-angular/wrp] [${this.id}] release`)
+    log(`[qubit-angular/wrp] [${this.id}] release`)
     if (this.experience && this.experience.onDestroy) {
       try {
         this.experience.onDestroy();
       } catch (err) {
-        console.error(`The onDestroy hook of experience ${this.id} failed`, err);
+        if (window.console) {
+          console.error(`The onDestroy hook of experience ${this.id} failed`, err);
+        }
       }
     }
 
@@ -119,9 +132,8 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges () {
-    console.log(`[qubit-angular/wrp] [${this.id}] ngOnChanges`)
     if (this.disable && this.experience) {
-      // we got switched off
+      log(`[qubit-angular/wrp] [${this.id}] has been disabled`)
       this.release();
     }
 
@@ -137,7 +149,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy () {
-    console.log(`[qubit-angular/wrp] [${this.id}] ngOnDestroy`)
+    log(`[qubit-angular/wrp] [${this.id}] ngOnDestroy`)
     this.destroyed = true;
     this.component.instances = this.component.instances.filter(i => i !== this)
     this.release();

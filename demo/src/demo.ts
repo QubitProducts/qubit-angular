@@ -61,8 +61,8 @@ function experience2 () {
       this.el.innerHTML = `<h1>${this.title}</h1>`
       this.el.querySelector('h1').style.borderBottom = '5px dotted rgb(89, 27, 179)'
       this.el.querySelector('h1').style.color = 'rgb(89, 27, 179)'
-      this.el.querySelector('h1').style.display = 'inline'
-      this.el.querySelector('h1').style.margin = '5px'
+      this.el.querySelector('h1').style.display = 'inline-block'
+      this.el.querySelector('h1').style.margin = '10px 0'
     }
 
     onChanges () {
@@ -80,7 +80,7 @@ function experience2 () {
   }
 
   const remove = experience({ }).register('article-preview', ArticlePreviewComponent, () => {
-    console.log('Activated experience 3')
+    console.log('Activated experience 2')
     // cb()
   })
 
@@ -160,6 +160,9 @@ function stop () {
 window['loadSmartserve'] = start
 window['unloadSmartserve'] = stop
 
+window['__qubit'] = window['__qubit'] || {}
+window['__qubit']['angular'] = window['__qubit']['angular'] || {}
+window['__qubit']['angular']['debug'] = true
 
 window['uv'].on('ecView', () => {
   stop()
