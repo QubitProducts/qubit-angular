@@ -1,7 +1,6 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-
-import { QubitAngularComponent } from './qubit-angular.component';
+import { QubitAngularComponent } from './qubit-angular.component'
 
 @NgModule({
   imports: [
@@ -14,4 +13,5 @@ import { QubitAngularComponent } from './qubit-angular.component';
     QubitAngularComponent
   ]
 })
+
 export class QubitAngularModule {}

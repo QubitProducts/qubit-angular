@@ -12,10 +12,14 @@
     "slapdash": "^1.3.3"
   },
   "devDependencies": {
-    "standard": "^11.0.1"
+    "@angular/common": "^6.0.3",
+    "@angular/core": "^6.0.3",
+    "tslint": "^5.10.0",
+    "tslint-config-standard": "^7.0.0",
+    "typescript": "^2.8.3"
   },
   "peerDependencies": {
-    "@angular/core": "*",
-    "@angular/common": "*"
+    "@angular/common": "*",
+    "@angular/core": "*"
   }
 }
