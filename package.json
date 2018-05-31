@@ -9,6 +9,10 @@
     "release": "np --no-publish --any-branch",
     "postrelease": "npm publish dist"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QubitProducts/qubit-angular.git"
+  },
   "author": "Karolis Narkevicius <karolis@qubit.com>",
   "license": "ISC",
   "dependencies": {
