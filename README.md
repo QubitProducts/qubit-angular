@@ -163,3 +163,11 @@ Run the following in console to simulate what happens when Qubit smartserve is o
 window.unloadSmartserve()
 window.loadSmartserve()
 ```
+
+## Releasing
+
+To release a new version of the package, run
+
+```
+npm run release
+```

@@ -6,8 +6,7 @@
     "test": "make test",
     "build": "make build",
     "version": "make build",
-    "release": "np --no-publish --any-branch",
-    "postrelease": "npm publish dist"
+    "release": "np --no-publish --any-branch && npm publish dist"
   },
   "repository": {
     "type": "git",
