@@ -1,4 +1,4 @@
-import { forEach } from 'slapdash'
+import { each } from 'slapdash'
 import { createObjectPath } from '../lib/createObjectPath'
 import { log } from '../lib/log'
 
@@ -25,7 +25,7 @@ export default function experience (meta) {
       component.ExperienceComponent = ExperienceComponent
       component.instances = component.instances || []
 
-      forEach(component.instances, i => {
+      each(component.instances, i => {
         i.takeOver()
       })
 
@@ -36,7 +36,7 @@ export default function experience (meta) {
           claimed = false
           component.claimed = false
           delete component.ExperienceComponent
-          forEach(component.instances, i => i.release())
+          each(component.instances, i => i.release())
         }
       }
     }
