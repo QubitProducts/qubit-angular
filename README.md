@@ -6,21 +6,19 @@ Wrap page components using qubit-angular/wrapper and change their rendering beha
 
 ## Website Implementation
 
-To expose a component for use in Experiences, wrap the relevant components with qubit-Angular/wrapper.
+To expose a component for use in Experiences, wrap the relevant components with `qubit-angular/wrapper`.
 
-First declare the `QubitAngularComponent` in your app.
+First import the `QubitAngularModule` in the module where you want to use the `qubit-angular/wrapper`.
 
 ```js
-import { QubitAngularComponent } from 'qubit-angular/wrapper';
+import { QubitAngularModule } from 'qubit-angular/wrapper';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FooterComponent,
-    // ...
-    QubitAngularComponent
+  declarations: [],
+  imports: [
+    // specify this as an import
+    QubitAngularModule
   ],
-  imports: [],
   providers: [],
   bootstrap: [AppComponent]
 })
@@ -31,7 +29,7 @@ And then wrap the relevant parts of your site.
 
 ```js
 <div>
-  <qubit-angular id='header'>
+  <qubit-angular id='header' [data]="trip">
     <app-header></app-header>
   </qubit-angular>
 </div>
@@ -76,11 +74,16 @@ Here's your component implementation, which is kept in `utils.js`.
 
 ```js
 module.exports.NewHeader = class NewHeader {
-  constructor (el) {
+  constructor (el, originalEl, data) {
     this.el = el
+    this.originalEl = originalEl
+    this.data = data
   }
   render () {
     return this.el.innerHTML = 'NEW HEADER'
+  }
+  doCheck () {
+    // check if this.data changed and if so, optionally, rerender
   }
   onDestroy () {
     // cleanup if necessary, e.g. unbind event listeners
