@@ -128,6 +128,10 @@ module.exports.NewHeader = class NewHeader {
 
 By default, the `<qubit-angular>` transparently renders all of the children components using `<ng-content>`. But when experience claims the wrapper, it hides the `<ng-content>` and reveals a `<div #outlet>` - a DOM element that is passed by reference to an experience. On a route change, or state change, if the component containing `<qubit-angular>` is removed, the experience gets a chance to cleanup via an `onDestroy` lifecycle hook and the ownership of the wrapper is released.
 
+## Debugging
+
+Set `__qubit.angular.debug = true` to see additional logging output about the state and lifecycles of the wrapper components.
+
 ## Points of interest
 
 The implementation of the <qubit-angular> component and module is over here:
