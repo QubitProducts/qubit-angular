@@ -5,7 +5,7 @@ import { HomeComponent } from './home.component';
 import { HomeAuthResolver } from './home-auth-resolver.service';
 import { SharedModule } from '../shared';
 import { HomeRoutingModule } from './home-routing.module';
-import { QubitAngularModule } from '../../../../../qubit-angular/wrapper/qubit-angular.module';
+import { QubitAngularModule } from '../../../../../qubit-angular/wrapper';
 
 @NgModule({
   imports: [

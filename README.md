@@ -21,7 +21,7 @@ To expose a component for use in Experiences, wrap the relevant site components 
 First import the `QubitAngularModule` in each module where you will be using the `<qubit-angular>` component.
 
 ```js
-import { QubitAngularModule } from 'qubit-angular/wrapper/qubit-angular.module';
+import { QubitAngularModule } from 'qubit-angular/wrapper';
 
 @NgModule({
   declarations: [],

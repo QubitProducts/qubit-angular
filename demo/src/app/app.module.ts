@@ -11,7 +11,7 @@ import {
 } from './shared';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
-import { QubitAngularModule } from '../../../../qubit-angular/wrapper/qubit-angular.module';
+import { QubitAngularModule } from '../../../../qubit-angular/wrapper';
 import { QubitService } from './services/tracking/qubit.service';
 
 @NgModule({
