@@ -6,7 +6,7 @@
     "test": "make test",
     "build": "make build",
     "version": "make build",
-    "release": "np --no-publish --any-branch && npm publish dist"
+    "release": "np --no-publish && npm publish dist"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@angular/common": "^5.0.0",
     "@angular/core": "^5.0.0",
-    "np": "^3.0.1",
+    "np": "^2.20.1",
     "tslint": "^5.10.0",
     "tslint-config-standard": "^7.0.0",
     "typescript": "^2.8.3"
