@@ -71,17 +71,34 @@ In order to take ownership of a wrapper during the experience activation phase, 
 module.exports = function experienceActivation (options, cb) {
   const experience = require('qubit-angular/experience')(options)
 
-  // this is the alternative component Header implementation
-  // we'll render instead of the existing slot content
-  const { NewHeader } = require('./utils')
-
-  const release = experience.register('header', NewHeader, cb)
+  const release = experience.register(['header'], (slots) => {
+    options.state.set('slots', slots)
+    cb()
+  })
 
   return {
     // important to release the ownership of the wrappers
     // so that other experiences on other virtual pageviews
     // can claim them.
     remove: release
+  }
+}
+```
+
+And in the experience execution, we can now render alternative content into the registered slots:
+
+```js
+module.exports = function experienceExecution (options) {
+  const { NewHeader } = require('./utils')
+  const slots = options.get('slots')
+
+  slots.render('header', NewHeader)
+
+  // unrender, if you only wanted to render the new content temporarily
+  slots.unrender('header', NewHeader)
+
+  return {
+    remove: slots.release
   }
 }
 ```

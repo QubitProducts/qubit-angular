@@ -1,52 +1,63 @@
-import { each } from 'slapdash'
+import { each, find } from 'slapdash'
 import { createObjectPath } from '../lib/createObjectPath'
-import { log } from '../lib/log'
 
 const noop: any = () => {}
 
 export default function experience (options: any = {}) {
   const log = options.log
-
-  if (!options.meta) {
-    throw new Error('Please pass in the experience options object')
-  }
-
-  const isControl = options.meta.variationIsControl
+  const getComponent = id => createObjectPath(window, ['__qubit', 'angular', 'components', id])
 
   return {
-    register: function (id, ExperienceComponent, cb) {
-      log.info(`[qubit-angular/exp] [${id}] registering`)
+    register: function (ids, cb) {
       let claimed = false
 
-      const component = createObjectPath(window, ['__qubit', 'angular', 'components', id])
+      const alreadyClaimed = find(ids, (id) => {
+        return getComponent(id).claimed
+      })
 
-      // the slot already claimed by another experience
-      if (component.claimed) {
+      // one of the requested wrappers has already been
+      // claimed by another experience
+      if (alreadyClaimed) {
         return noop
       }
 
-      log.info(`[qubit-angular/exp] [${id}] claimed`)
-      claimed = true
-      component.claimed = true
-      component.isControl = isControl
-      component.ExperienceComponent = ExperienceComponent
-      component.instances = component.instances || []
-
-      each(component.instances, i => {
-        i.takeOver()
+      each(ids, (id) => {
+        log && log.info(`[qubit-angular/experience] [${id}] registering`)
+        const component = getComponent(id)
+        claimed = true
+        component.claimed = true
+        component.instances = component.instances || []
       })
 
-      cb && cb()
+      const slots = {
+        render: function render (id, ExperienceComponent) {
+          const component = getComponent(id)
+          component.ExperienceComponent = ExperienceComponent
+          each(component.instances, i => i.takeOver())
+        },
+        unrender: function unrender (id) {
+          const component = getComponent(id)
+          each(component.instances, i => i.release())
+        },
+        release: release
+      }
 
-      return function release () {
+      cb && cb(slots)
+
+      function release () {
         if (claimed) {
           claimed = false
-          component.claimed = false
-          delete component.ExperienceComponent
-          each(component.instances, i => i.release())
-          log.info(`[qubit-angular/exp] [${id}] released`)
+          each(ids, id => {
+            const component = getComponent(id)
+            component.claimed = false
+            delete component.ExperienceComponent
+            each(component.instances, i => i.release())
+            log && log.info(`[qubit-angular/experience] [${id}] released`)
+          })
         }
       }
+
+      return release
     }
   }
 }

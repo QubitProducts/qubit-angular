@@ -70,9 +70,9 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   ) {}
 
   ngOnInit () {
-    log(`[qubit-angular/wrp] [${this.id}] onOnInit`)
+    log(`[qubit-angular/wrapper] [${this.id}] onOnInit`)
     if (this.disable) {
-      log(`[qubit-angular/wrp] [${this.id}] disabled`)
+      log(`[qubit-angular/wrapper] [${this.id}] disabled`)
       return
     }
 
@@ -80,11 +80,11 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   }
 
   registerWithExperiences () {
-    log(`[qubit-angular/wrp] [${this.id}] registerWithExperiences`)
+    log(`[qubit-angular/wrapper] [${this.id}] registerWithExperiences`)
     this.component = createObjectPath(window, ['__qubit', 'angular', 'components', this.id])
 
     if (this.component.isControl) {
-      log(`[qubit-angular/wrp] [${this.id}] in control - not doing anything`)
+      log(`[qubit-angular/wrapper] [${this.id}] in control - not doing anything`)
       return
     }
 
@@ -97,7 +97,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   }
 
   takeOver () {
-    log(`[qubit-angular/wrp] [${this.id}] takeOver`)
+    log(`[qubit-angular/wrapper] [${this.id}] takeOver`)
     this.isExperienceActive = true
     this.changeDetector.detectChanges()
 
@@ -117,7 +117,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   }
 
   release () {
-    log(`[qubit-angular/wrp] [${this.id}] release`)
+    log(`[qubit-angular/wrapper] [${this.id}] release`)
     if (this.experience && this.experience.onDestroy) {
       try {
         this.experience.onDestroy()
@@ -138,7 +138,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
 
   ngOnChanges () {
     if (this.disable && this.experience) {
-      log(`[qubit-angular/wrp] [${this.id}] has been disabled`)
+      log(`[qubit-angular/wrapper] [${this.id}] has been disabled`)
       this.release()
     }
 
@@ -154,7 +154,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   }
 
   ngOnDestroy () {
-    log(`[qubit-angular/wrp] [${this.id}] ngOnDestroy`)
+    log(`[qubit-angular/wrapper] [${this.id}] ngOnDestroy`)
     this.destroyed = true
     this.component.instances = filter(this.component.instances, i => i !== this)
     this.release()

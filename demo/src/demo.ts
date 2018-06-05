@@ -40,8 +40,9 @@ function experience1 () {
     onDestroy () {}
   }
 
-  const remove = experience(experienceOptions).register('hero', HeroComponent, () => {
+  const remove = experience(experienceOptions).register(['hero'], (slots) => {
     console.log('Activated experience 1')
+    slots.render('hero', HeroComponent)
     // cb()
   })
 
@@ -86,8 +87,9 @@ function experience2 () {
     onDestroy () {}
   }
 
-  const remove = experience(experienceOptions).register('article-preview', ArticlePreviewComponent, () => {
+  const remove = experience(experienceOptions).register(['article-preview'], (slots) => {
     console.log('Activated experience 2')
+    slots.render('article-preview', ArticlePreviewComponent)
     // cb()
   })
 
@@ -127,8 +129,9 @@ function experience3 () {
     }
   }
 
-  const remove = experience(experienceOptions).register('article-hero', ArticleHeroComponent, () => {
+  const remove = experience(experienceOptions).register(['article-hero'], (slots) => {
     console.log('Activated experience 3')
+    slots.render('article-hero', ArticleHeroComponent)
     // cb()
   })
 
