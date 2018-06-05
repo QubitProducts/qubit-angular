@@ -12,6 +12,7 @@ import {
 
 import { createObjectPath } from '../lib/createObjectPath'
 import { log } from '../lib/log'
+import { filter } from 'slapdash'
 
 declare let window: any
 
@@ -155,7 +156,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   ngOnDestroy () {
     log(`[qubit-angular/wrp] [${this.id}] ngOnDestroy`)
     this.destroyed = true
-    this.component.instances = this.component.instances.filter(i => i !== this)
+    this.component.instances = filter(this.component.instances, i => i !== this)
     this.release()
   }
 }
