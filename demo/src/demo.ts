@@ -3,6 +3,13 @@
 // import the experience module
 import experience from '../../../qubit-angular/experience'
 
+const experienceOptions = {
+  meta: {},
+  log: {
+    info: console.log
+  }
+}
+
 function experience1 () {
   class HeroComponent {
     el: any
@@ -33,7 +40,7 @@ function experience1 () {
     onDestroy () {}
   }
 
-  const remove = experience({ }).register('hero', HeroComponent, () => {
+  const remove = experience(experienceOptions).register('hero', HeroComponent, () => {
     console.log('Activated experience 1')
     // cb()
   })
@@ -79,7 +86,7 @@ function experience2 () {
     onDestroy () {}
   }
 
-  const remove = experience({ }).register('article-preview', ArticlePreviewComponent, () => {
+  const remove = experience(experienceOptions).register('article-preview', ArticlePreviewComponent, () => {
     console.log('Activated experience 2')
     // cb()
   })
@@ -120,7 +127,7 @@ function experience3 () {
     }
   }
 
-  const remove = experience({ }).register('article-hero', ArticleHeroComponent, () => {
+  const remove = experience(experienceOptions).register('article-hero', ArticleHeroComponent, () => {
     console.log('Activated experience 3')
     // cb()
   })

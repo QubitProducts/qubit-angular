@@ -4,12 +4,18 @@ import { log } from '../lib/log'
 
 const noop: any = () => {}
 
-export default function experience (meta) {
-  const isControl = meta.variationIsControl
+export default function experience (options: any = {}) {
+  const log = options.log
+
+  if (!options.meta) {
+    throw new Error('Please pass in the experience options object')
+  }
+
+  const isControl = options.meta.variationIsControl
 
   return {
     register: function (id, ExperienceComponent, cb) {
-      log(`[qubit-angular/exp] [${id}] registering`)
+      log.info(`[qubit-angular/exp] [${id}] registering`)
       let claimed = false
 
       const component = createObjectPath(window, ['__qubit', 'angular', 'components', id])
@@ -19,6 +25,7 @@ export default function experience (meta) {
         return noop
       }
 
+      log.info(`[qubit-angular/exp] [${id}] claimed`)
       claimed = true
       component.claimed = true
       component.isControl = isControl
@@ -37,6 +44,7 @@ export default function experience (meta) {
           component.claimed = false
           delete component.ExperienceComponent
           each(component.instances, i => i.release())
+          log.info(`[qubit-angular/exp] [${id}] released`)
         }
       }
     }

@@ -59,7 +59,7 @@ First initiate the library in the experience activation by passing in the experi
 
 ```js
 module.exports = function experienceActivation (options, cb) {
-  const experience = require('qubit-angular/experience')(options.meta)
+  const experience = require('qubit-angular/experience')(options)
 }
 ```
 
@@ -69,7 +69,7 @@ In order to take ownership of a wrapper during the experience activation phase, 
 
 ```js
 module.exports = function experienceActivation (options, cb) {
-  const experience = require('qubit-angular/experience')(options.meta)
+  const experience = require('qubit-angular/experience')(options)
 
   // this is the alternative component Header implementation
   // we'll render instead of the existing slot content
