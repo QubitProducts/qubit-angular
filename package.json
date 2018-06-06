@@ -1,6 +1,6 @@
 {
   "name": "qubit-angular",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A library for enabling Qubit Experiences on Angular sites",
   "scripts": {
     "test": "make test",
