@@ -153,12 +153,12 @@ Set `__qubit.angular.debug = true` to see additional logging output about the st
 
 The implementation of the <qubit-angular> component and module is over here:
 
-  * [wrapper/qubit-angular.component.ts](wrapper/qubit-angular.component.ts)
-  * [wrapper/qubit-angular.module.ts](wrapper/qubit-angular.module.ts)
+  * [src/wrapper/qubit-angular.component.ts](src/wrapper/qubit-angular.component.ts)
+  * [src/wrapper/qubit-angular.module.ts](src/wrapper/qubit-angular.module.ts)
 
 The implementation of the experience registration hook is here:
 
-  * [experience/index.ts](experience/index.ts)
+  * [src/experience/index.ts](src/experience/index.ts)
 
 ## Demo
 
