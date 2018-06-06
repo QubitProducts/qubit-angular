@@ -172,7 +172,7 @@ To run this locally and see how it works, use the included demo project.
 5. open http://localhost:4200
 ```
 
-You should see a green themed website with some purple elements being controlled by the wrappers. See [demo/src/demo.ts](demo/src/demo.ts) to see how the wrappers are used to render alternative content.
+You should see a green themed website with some purple elements being controlled by the wrappers. See [demo/src/experiences/index.ts](demo/src/experiences/index.ts) to see how the wrappers are used to render alternative content.
 
 Run the following in console to simulate what happens when Qubit smartserve is off or on:
 
