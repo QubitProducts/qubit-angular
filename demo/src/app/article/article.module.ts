@@ -7,7 +7,7 @@ import { ArticleResolver } from './article-resolver.service';
 import { MarkdownPipe } from './markdown.pipe';
 import { SharedModule } from '../shared';
 import { ArticleRoutingModule } from './article-routing.module';
-import { QubitAngularModule } from '../../../../../qubit-angular/wrapper';
+import { QubitAngularModule } from '../../../../src/wrapper';
 
 @NgModule({
   imports: [

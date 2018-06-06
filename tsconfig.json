@@ -10,9 +10,7 @@
     "outDir": "dist"
   },
   "include": [
-    "experience/**/*",
-    "lib/**/*",
-    "wrapper/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules/**/*",

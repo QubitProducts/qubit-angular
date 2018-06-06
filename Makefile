@@ -10,7 +10,7 @@ test: lint
 lint:
 	@$(BIN)/tslint --type-check -p tsconfig.json -c tslint.json
 
-build: lint
+build: clean lint
 	@$(BIN)/tsc
 	@cp package.json ./dist/package.json
 	@cp package-lock.json ./dist/package-lock.json
