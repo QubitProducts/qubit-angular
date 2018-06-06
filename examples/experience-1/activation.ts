@@ -1,4 +1,4 @@
-import experience from '../../../../src/experience'
+import experience from '../../src/experience'
 
 export default function activation (options, cb) {
   const release = experience(options).register(['hero'], (slots) => {

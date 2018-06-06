@@ -14,4 +14,4 @@ const bootstrapPromise =  platformBrowserDynamic().bootstrapModule(AppModule);
 bootstrapPromise
   .catch(err => console.error(err));
 
-import './experiences'
+import '../../examples'
