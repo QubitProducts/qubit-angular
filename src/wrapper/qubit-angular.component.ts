@@ -1,4 +1,5 @@
 import {
+  PLATFORM_ID,
   Component,
   OnInit,
   OnChanges,
@@ -7,11 +8,13 @@ import {
   ElementRef,
   ViewChild,
   Input,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Inject
 } from '@angular/core'
+import { isPlatformBrowser } from '@angular/common'
 
 import { createObjectPath } from '../lib/createObjectPath'
-import { log } from '../lib/log'
+import { log, logError } from '../lib/log'
 
 declare let window: any
 
@@ -49,15 +52,11 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   @ViewChild('outlet') private outlet!: ElementRef
   @ViewChild('original') private original!: ElementRef
 
-  // private window: Window
-
   // the experience component API on window
   private component: any = null
 
   // the experience component instance
   private experience: any = null
-
-  // private changeDetector: ChangeDetectorRef
 
   // when this component gets destroyed
   private destroyed: boolean = false
@@ -65,17 +64,19 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   constructor (
     // used to detect changes when the experience
     // code initiates state changes
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit () {
-    log(`[qubit-angular/wrapper] [${this.id}] onOnInit`)
-    if (this.disable) {
-      log(`[qubit-angular/wrapper] [${this.id}] disabled`)
-      return
+    if (isPlatformBrowser(this.platformId)) {
+      log(`[qubit-angular/wrapper] [${this.id}] onOnInit`)
+      if (this.disable) {
+        log(`[qubit-angular/wrapper] [${this.id}] disabled`)
+        return
+      }
+      this.registerWithExperiences()
     }
-
-    this.registerWithExperiences()
   }
 
   registerWithExperiences () {
@@ -108,9 +109,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
       )
       this.experience.render()
     } catch (err) {
-      if (window.console) {
-        window.console.error(`Starting the experience in id=${this.id} failed`, err)
-      }
+      logError(`Starting the experience in id=${this.id} failed`, err)
       this.release()
     }
   }
@@ -121,9 +120,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
       try {
         this.experience.onDestroy()
       } catch (err) {
-        if (window.console) {
-          window.console.error(`The onDestroy hook of experience ${this.id} failed`, err)
-        }
+        logError(`The onDestroy hook of experience ${this.id} failed`, err)
       }
     }
 
@@ -153,9 +150,11 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   }
 
   ngOnDestroy () {
-    log(`[qubit-angular/wrapper] [${this.id}] ngOnDestroy`)
-    this.destroyed = true
-    this.component.instances = this.component.instances.filter((i: QubitAngularComponent) => i !== this)
-    this.release()
+    if (isPlatformBrowser(this.platformId)) {
+      log(`[qubit-angular/wrapper] [${this.id}] ngOnDestroy`)
+      this.destroyed = true
+      this.component.instances = this.component.instances.filter((i: QubitAngularComponent) => i !== this)
+      this.release()
+    }
   }
 }
