@@ -2,7 +2,7 @@ class ArticleHeroComponent {
   el: any
   interval: any
 
-  constructor (el) {
+  constructor (el: any) {
     this.el = el
   }
 

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 
 declare let uv: { emit: Function };
 
 @Injectable()
 export class QubitService {
-  private subscription: Subscription;
+  private subscription!: Subscription;
 
   constructor(
     private router: Router
@@ -16,7 +16,7 @@ export class QubitService {
     if (!this.subscription) {
       this.subscription = this.router.events.subscribe( e => {
         if (e instanceof NavigationEnd) {
-          uv.emit('ecView')
+          uv.emit('ecView');
         }
       });
     }

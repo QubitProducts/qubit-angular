@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { User, UserService, Profile } from '../core';
-import { concatMap } from 'rxjs/operators/concatMap';
-import { tap } from 'rxjs/operators/tap';
+import { concatMap ,  tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-page',
@@ -15,9 +14,9 @@ export class ProfileComponent implements OnInit {
     private userService: UserService
   ) { }
 
-  profile: Profile;
-  currentUser: User;
-  isUser: boolean;
+  profile!: Profile;
+  currentUser!: User;
+  isUser!: boolean;
 
   ngOnInit() {
     this.route.data.pipe(

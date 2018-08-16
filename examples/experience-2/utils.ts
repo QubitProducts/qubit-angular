@@ -4,7 +4,7 @@ class ArticlePreviewComponent {
   article: any
   title: string
 
-  constructor (el, originalContentEl, article) {
+  constructor (el: any, originalContentEl: any, article: any) {
     this.el = el
     this.oc = originalContentEl
     this.article = article

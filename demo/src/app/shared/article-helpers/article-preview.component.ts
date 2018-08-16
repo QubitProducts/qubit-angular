@@ -7,7 +7,7 @@ import { Article } from '../../core';
   templateUrl: './article-preview.component.html'
 })
 export class ArticlePreviewComponent {
-  @Input() article: Article;
+  @Input() article!: Article;
 
   onChangeTitle () {
     this.article.title = this.article.title.split(' // ')[0]

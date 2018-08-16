@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
 import { Comment } from '../models';
-import { map } from 'rxjs/operators/map';
+import { map } from 'rxjs/operators';
 
 
 @Injectable()
@@ -12,7 +12,7 @@ export class CommentsService {
     private apiService: ApiService
   ) {}
 
-  add(slug, payload): Observable<Comment> {
+  add(slug: any, payload: any): Observable<Comment> {
     return this.apiService
     .post(
       `/articles/${slug}/comments`,
@@ -20,12 +20,12 @@ export class CommentsService {
     ).pipe(map(data => data.comment));
   }
 
-  getAll(slug): Observable<Comment[]> {
+  getAll(slug: any): Observable<Comment[]> {
     return this.apiService.get(`/articles/${slug}/comments`)
       .pipe(map(data => data.comments));
   }
 
-  destroy(commentId, articleSlug) {
+  destroy(commentId: any, articleSlug: any) {
     return this.apiService
            .delete(`/articles/${articleSlug}/comments/${commentId}`);
   }

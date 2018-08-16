@@ -1,28 +1,35 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 
 import { Comment, User, UserService } from '../core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-article-comment',
   templateUrl: './article-comment.component.html'
 })
-export class ArticleCommentComponent implements OnInit {
+export class ArticleCommentComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService
   ) {}
 
-  @Input() comment: Comment;
+  private subscription!: Subscription;
+
+  @Input() comment!: Comment;
   @Output() deleteComment = new EventEmitter<boolean>();
 
-  canModify: boolean;
+  canModify!: boolean;
 
   ngOnInit() {
     // Load the current user's data
-    this.userService.currentUser.subscribe(
+    this.subscription = this.userService.currentUser.subscribe(
       (userData: User) => {
         this.canModify = (userData.username === this.comment.author.username);
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   deleteClicked() {

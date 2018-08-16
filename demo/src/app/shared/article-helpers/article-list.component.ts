@@ -11,7 +11,7 @@ export class ArticleListComponent {
     private articlesService: ArticlesService
   ) {}
 
-  @Input() limit: number;
+  @Input() limit!: number;
   @Input()
   set config(config: ArticleListConfig) {
     if (config) {
@@ -21,13 +21,13 @@ export class ArticleListComponent {
     }
   }
 
-  query: ArticleListConfig;
-  results: Article[];
+  query!: ArticleListConfig;
+  results!: Article[];
   loading = false;
   currentPage = 1;
   totalPages: Array<number> = [1];
 
-  setPageTo(pageNumber) {
+  setPageTo(pageNumber: number) {
     this.currentPage = pageNumber;
     this.runQuery();
   }
