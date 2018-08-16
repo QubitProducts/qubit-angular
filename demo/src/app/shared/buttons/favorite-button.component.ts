@@ -2,9 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Article, ArticlesService, UserService } from '../../core';
-import { of } from 'rxjs/observable/of';
-import { concatMap } from 'rxjs/operators/concatMap';
-import { tap } from 'rxjs/operators/tap';
+import { of } from 'rxjs';
+import { concatMap ,  tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-favorite-button',
@@ -17,7 +16,7 @@ export class FavoriteButtonComponent {
     private userService: UserService
   ) {}
 
-  @Input() article: Article;
+  @Input() article!: Article;
   @Output() toggle = new EventEmitter<boolean>();
   isSubmitting = false;
 

@@ -7,5 +7,5 @@ import { Article } from '../../core';
   templateUrl: './article-meta.component.html'
 })
 export class ArticleMetaComponent {
-  @Input() article: Article;
+  @Input() article!: Article;
 }

@@ -2,7 +2,7 @@ class HeroComponent {
   el: any
   oc: any
 
-  constructor (el, originalContentEl) {
+  constructor (el: any, originalContentEl: any) {
     this.el = el
     this.oc = originalContentEl
   }

@@ -19,7 +19,8 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "strict": true
   },
   "include": [
     "src/**/*",

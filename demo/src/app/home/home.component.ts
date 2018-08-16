@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  isAuthenticated: boolean;
+  isAuthenticated!: boolean;
   listConfig: ArticleListConfig = {
     type: 'all',
     filters: {}

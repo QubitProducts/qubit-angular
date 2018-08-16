@@ -15,11 +15,7 @@ import { QubitAngularModule } from '../../../src/wrapper';
 import { QubitService } from './services/tracking/qubit.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FooterComponent,
-    HeaderComponent
-  ],
+  declarations: [AppComponent, FooterComponent, HeaderComponent],
   imports: [
     BrowserModule,
     CoreModule,

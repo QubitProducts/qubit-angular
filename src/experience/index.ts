@@ -1,17 +1,16 @@
-import { each, find } from 'slapdash'
 import { createObjectPath } from '../lib/createObjectPath'
 
 const noop: any = () => {}
 
 export default function experience (options: any = {}) {
   const log = options.log
-  const getComponent = id => createObjectPath(window, ['__qubit', 'angular', 'components', id])
+  const getComponent = (id: string) => createObjectPath(window, ['__qubit', 'angular', 'components', id])
 
   return {
-    register: function (ids, cb) {
+    register: function (ids: string[], cb: ((slots: any) => void)) {
       let claimed = false
 
-      const alreadyClaimed = find(ids, (id) => {
+      const alreadyClaimed = ids.find(id => {
         return getComponent(id).claimed
       })
 
@@ -21,7 +20,7 @@ export default function experience (options: any = {}) {
         return noop
       }
 
-      each(ids, (id) => {
+      ids.forEach((id) => {
         log && log.info(`[qubit-angular/experience] [${id}] registering`)
         const component = getComponent(id)
         claimed = true
@@ -30,14 +29,14 @@ export default function experience (options: any = {}) {
       })
 
       const slots = {
-        render: function render (id, ExperienceComponent) {
+        render: function render (id: string, ExperienceComponent: any) {
           const component = getComponent(id)
           component.ExperienceComponent = ExperienceComponent
-          each(component.instances, i => i.takeOver())
+          component.instances.forEach((i: any) => i.takeOver())
         },
-        unrender: function unrender (id) {
+        unrender: function unrender (id: string) {
           const component = getComponent(id)
-          each(component.instances, i => i.release())
+          component.instances.forEach((i: any) => i.release())
         },
         release: release
       }
@@ -47,11 +46,11 @@ export default function experience (options: any = {}) {
       function release () {
         if (claimed) {
           claimed = false
-          each(ids, id => {
+          ids.forEach((id: string) => {
             const component = getComponent(id)
             component.claimed = false
             delete component.ExperienceComponent
-            each(component.instances, i => i.release())
+            component.instances.forEach((i: any) => i.release())
             log && log.info(`[qubit-angular/experience] [${id}] released`)
           })
         }

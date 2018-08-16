@@ -12,7 +12,6 @@ import {
 
 import { createObjectPath } from '../lib/createObjectPath'
 import { log } from '../lib/log'
-import { filter } from 'slapdash'
 
 declare let window: any
 
@@ -34,12 +33,12 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
 
   // the experience references this angular component
   // by this string id
-  @Input() private id
+  @Input() private id!: string
 
   // it's possible to disable each individual angular
   // component from being taken over by the experience
   // by setting disable to true
-  @Input() private disable
+  @Input() private disable: boolean = false
 
   // this is arbitrary data that can be passed to this
   // component that will get passed to the experience
@@ -47,21 +46,21 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
 
   // this is the DOM element that will get passed to the
   // experience as the container for all of it's work
-  @ViewChild('outlet') private outlet: ElementRef
-  @ViewChild('original') private original: ElementRef
+  @ViewChild('outlet') private outlet!: ElementRef
+  @ViewChild('original') private original!: ElementRef
 
   // private window: Window
 
   // the experience component API on window
-  private component = null
+  private component: any = null
 
   // the experience component instance
-  private experience = null
+  private experience: any = null
 
   // private changeDetector: ChangeDetectorRef
 
   // when this component gets destroyed
-  private destroyed = false
+  private destroyed: boolean = false
 
   constructor (
     // used to detect changes when the experience
@@ -156,7 +155,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
   ngOnDestroy () {
     log(`[qubit-angular/wrapper] [${this.id}] ngOnDestroy`)
     this.destroyed = true
-    this.component.instances = filter(this.component.instances, i => i !== this)
+    this.component.instances = this.component.instances.filter((i: QubitAngularComponent) => i !== this)
     this.release()
   }
 }

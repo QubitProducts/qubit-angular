@@ -16,10 +16,10 @@ import {
   templateUrl: './article.component.html'
 })
 export class ArticleComponent implements OnInit {
-  article: Article;
-  currentUser: User;
-  canModify: boolean;
-  comments: Comment[];
+  article!: Article;
+  currentUser!: User;
+  canModify!: boolean;
+  comments!: Comment[];
   commentControl = new FormControl();
   commentFormErrors = {};
   isSubmitting = false;
@@ -35,7 +35,7 @@ export class ArticleComponent implements OnInit {
 
   ngOnInit() {
     // Retreive the prefetched article
-    this.route.data.subscribe(
+    (this.route as any).data.subscribe(
       (data: { article: Article }) => {
         this.article = data.article;
 
@@ -104,7 +104,7 @@ export class ArticleComponent implements OnInit {
       );
   }
 
-  onDeleteComment(comment) {
+  onDeleteComment(comment: any) {
     this.commentsService.destroy(comment.id, this.article.slug)
       .subscribe(
         success => {

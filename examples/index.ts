@@ -3,8 +3,10 @@ import experience2 from './experience-2'
 import experience3 from './experience-3'
 import run from './run'
 
+declare let window: any
+
 // simulate smartserve activating experiences
-let cleanup = []
+let cleanup: any[] = []
 
 function start () {
   cleanup.push(run(experience1))
@@ -13,7 +15,7 @@ function start () {
 }
 
 function stop () {
-  cleanup.forEach(exp => exp.remove())
+  cleanup.forEach((exp: any) => exp.remove())
   cleanup = []
 }
 
