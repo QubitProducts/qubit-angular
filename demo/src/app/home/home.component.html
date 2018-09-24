@@ -59,6 +59,8 @@
           <div [hidden]="!tagsLoaded || tags.length > 0">
             No tags are here... yet.
           </div>
+
+          <qubit-angular *ngIf="showSidebarHero" id="hero"></qubit-angular>
         </div>
       </div>
 

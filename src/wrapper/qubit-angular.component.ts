@@ -91,7 +91,7 @@ export class QubitAngularComponent implements OnInit, OnChanges, DoCheck, OnDest
     this.component.instances = this.component.instances || []
     this.component.instances.push(this)
 
-    if (this.component.claimed) {
+    if (this.component.rendered) {
       this.takeOver()
     }
   }

@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
     private userService: UserService
   ) {}
 
+  showSidebarHero!: boolean;
   isAuthenticated!: boolean;
   listConfig: ArticleListConfig = {
     type: 'all',
@@ -24,6 +25,10 @@ export class HomeComponent implements OnInit {
   tagsLoaded = false;
 
   ngOnInit() {
+    setTimeout(() => {
+      this.showSidebarHero = true
+    }, 3000)
+
     this.userService.isAuthenticated.subscribe(
       (authenticated) => {
         this.isAuthenticated = authenticated;
