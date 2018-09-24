@@ -31,6 +31,7 @@ function experience (options: any = {}) {
       const slots = {
         render: function render (id: string, ExperienceComponent: any) {
           const component = getComponent(id)
+          component.rendered = true
           component.ExperienceComponent = ExperienceComponent
           component.instances.forEach((i: any) => i.takeOver())
         },
