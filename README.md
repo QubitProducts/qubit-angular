@@ -90,7 +90,7 @@ And in the experience execution, we can now render alternative content into the 
 ```js
 module.exports = function experienceExecution (options) {
   const { NewHeader } = require('./utils')
-  const slots = options.get('slots')
+  const slots = options.state.get('slots')
 
   slots.render('header', NewHeader)
 
